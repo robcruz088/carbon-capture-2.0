@@ -10,5 +10,5 @@ in order to not only update the system, but so that
 The project will include a feature that was not considered before- Filtering pollutants from the air.
 Aside from tracking various pollutants in the air the next phase of the project is to filter them and return cleaner air. 
 
-This is a prototype that showcases a proof of concept. This project exists to find cost effective methods 
+This is a prototype that showcases a proof of concept. It exists to find cost effective methods 
 to produce a pollution filter that is both accurate and efficient. 

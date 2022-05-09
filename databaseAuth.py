@@ -12,8 +12,8 @@ def connectDatabase(user,password, dbName):
 
     try:
         client = MongoClient(
-                "mongodb+srv://%s:%s@testcluster.dzoyl.mongodb.net/%s?retryWrites=true&w=majority" %
-                (user, password, dbName) )
+                "mongodb+srv://%s:%s@%s.dzoyl.mongodb.net/%s?retryWrites=true&w=majority" %
+                (user, password, dbName, dbName) )
         client.server_info() # check for connection
         print("Authentication Successful!")
         return client

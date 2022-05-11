@@ -1,6 +1,8 @@
 import serial
 import random
 import string
+import datetime
+import json
 
 
 def payload(com: str, baudRate = 9600):
@@ -24,6 +26,7 @@ def payload(com: str, baudRate = 9600):
 
         return dataArray
 
+
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     """
     Generate ID's for the database. Can increase the size but works best when the character
@@ -34,3 +37,41 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     :return: string ID
     """
     return ''.join(random.choice(chars) for _ in range(size))
+
+def toJson(jsonFileName: str, dataPayload: list):
+    """
+    Simple function to write to a JSON file
+    :param jsonFileName: JSON filename
+    :param dataPayload: takes a list in order to put it in a JSON
+    """
+
+    # dictionary. Will be updated eventually to be more
+    # scalable for different types of JSON with list
+    sensorData = {
+        "Temperature(C/F)": [
+            dataPayload[0],
+            dataPayload[1]
+        ],
+        "Humidity(%)": dataPayload[2],
+        "CO (PPM)": dataPayload[3],
+        "_id": id_generator()
+    }
+
+    with open(jsonFileName, 'w') as jsonFile:
+        json.dump(sensorData, jsonFile)
+
+def readFromJson(jsonFileName, ):
+    """
+    Simple function to read the JSON
+    :param jsonFileName: the JSON file name
+    :return:
+    """
+    with open(jsonFileName, 'r') as jsonFile:
+        sensorData = json.load(jsonFile)
+    print(sensorData)
+    return sensorData
+
+
+#               _
+#  quack      >(.)__
+#              (___/

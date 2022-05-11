@@ -19,9 +19,12 @@ def connectDatabase(user,password, dbName):
         return client
 
     except pymongo.errors.OperationFailure:
+        # error handler in case of wrong credentials
         print("Could not connect to the database!")
 
-
+#               _
+#  quack      >(.)__
+#              (___/
 
 
 

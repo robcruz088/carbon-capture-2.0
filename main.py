@@ -14,7 +14,7 @@ try:
     db_collection = db['sensor'] # collection in the data base
 
     while True:
-        arduinoConnection = payload('COM3', 9600)
+        arduinoConnection = payload('COM3', 115200)
 
         # the purpose of this is only to make the code look cleaner
         # can be done without a JSON file for this specific case
@@ -33,4 +33,4 @@ except TypeError:
 
 #               _
 #  quack      >(.)__
-#              (___/  
+#              (___/

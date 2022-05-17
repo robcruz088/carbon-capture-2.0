@@ -53,7 +53,11 @@ def toJson(jsonFileName: str, dataPayload: list):
             dataPayload[1]
         ],
         "Humidity(%)": dataPayload[2],
-        "CO (PPM)": dataPayload[3],
+        "Particulate Matter(PM1/PM2.5/PM10)": [
+            dataPayload[3],
+            dataPayload[4],
+            dataPayload[5]
+        ],
         "_id": id_generator()
     }
 

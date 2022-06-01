@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html  lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Current Condition Charts</title>
+
+    <!-- jQuery Links -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Highchart Environment -->
+    <script src = "https://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+
+</head>
+
+<body>
+<!---
+    <div class="container-fluid">
+        <div class="row">
+            <div class="container-fluid" id="temperature-data">
+            </div>
+        </div>
+    </div> -->
+
+    <button onclick="ButtonHide('temperature-data')">Try It</button>
+
+    <div id = "temperature-data" style = "width: 550px; height: 400px; margin: 0 auto"></div>
+
+    <script>
+        function ButtonHide(elementID){
+        var elementToHide = document.getElementById(elementID);
+        if (elementToHide.style.display == "none"){
+            elementToHide.style.display = 'block';
+        }
+        else{
+            elementToHide.style.display = "none";
+        }
+    }
+    </script>
+
+    <script>
+    var chartTemperature;
+    var chartHumidity;
+
+    function requestData(){
+        // Ajax call to GET data from Flask
+
+        var requests = $.get('/data');
+        var tm = request.done(function (result){
+            // Temperature
+            var seriesTemperature = chartTemperature.series[0];
+            var shiftTemperature = seriesTemperature.data.lenght > 20;
+
+            // Humidity
+            var seriesHumidity = chartHumidity;
+            var shiftHumidity = seriesHumidity.data.lenght > 20;
+
+            // --- Points in the chart -- //
+
+            // making data arrays that are essentially [x,y] for Highchart plotting
+
+            // Time vs Temperature
+            var temperatureData = [];
+            temperatureData.push(result[0]); // push time onto temperature data array
+            temperatureData.push(result[1]); // push temperature into data array
+
+            // Time vs Humidity
+            var humidityData = [];
+            humidityData.push(result[0]);
+            humidityData.push(result[2]);
+
+            //TODO: ADD OTHER CHARTS
+
+            // Add Points to Chart
+            chartTemperature.series[0].addPoint(temperatureData,true,shiftTemperature);
+            chartHumidity.series[0].addPoint(humidityData,true,shiftHumidity);
+
+            // call again after a two seconds
+            setTimeout(requestData,2000);
+        });
+
+    }
+
+    // Function that makes creating new charts of the same style straight forward
+
+    function sensorChart(chartID, chartTitle, yaxisTitle, dotColor, lineColor, chartName){
+        // Temperature Chart
+        chartForSensor = new Highcharts.Chart({
+            chart:
+            {
+                renderTo: chartID, // DOM element
+                defaultSeriesType: 'area',
+                events: {					// equivalent to Highcharts.ChartCallbackFunction
+                    load:requestData
+                }
+            },
+            title:
+            {
+                text:chartTitle
+            },
+            xAxis:
+            {
+                type:'datetime',
+                tickPixelInterval: 150,
+                minRange: 20*1000,
+                title:{
+                text:'Time (HH:MM)'
+                }
+            },
+            yAxis:{
+                minPadding:0.2,
+                maxPadding:0.2,
+                title:{
+                    text:yaxisTitle,
+                    margin:80
+                }
+            },
+            series:[{
+                color:dotColor,
+                lineColor:lineColor,
+                name:chartName,
+                data:[]
+            }]
+        });
+    }
+
+    $(document).ready(function()
+    {
+        // Temperature Chart
+        sensorChart('temperature-data','Temperature','Fahrenheit (F)','#c23d23','#303030','Temperature (F)')
+
+        // Humidity Chart
+	    sensorChart('humidity-data', 'Humidity', 'Hum (%)','#1d82b8','#1d82b8','Humidity')
+
+    });
+
+    </script>
+
+</body>
+
+</html>
+
+<!--
+      _
+    >(.)__
+     (___/
+-->

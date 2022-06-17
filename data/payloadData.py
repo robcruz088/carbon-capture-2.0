@@ -3,6 +3,7 @@ import random
 import string
 import datetime
 import json
+import time
 
 
 def payload(com: str, baudRate = 9600):
@@ -38,6 +39,15 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     """
     return ''.join(random.choice(chars) for _ in range(size))
 
+def getTime():
+    """
+    Time function for charting purposes
+    :return: Current Local time
+    """
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S",t)
+    return current_time
+
 def toJson(jsonFileName: str, dataPayload: list):
     """
     Simple function to write to a JSON file
@@ -53,12 +63,13 @@ def toJson(jsonFileName: str, dataPayload: list):
             dataPayload[1]
         ],
         "Humidity(%)": dataPayload[2],
-        "Particulate Matter(PM1/PM2.5/PM10)": [
+        "PM(S/M/D)": [
             dataPayload[3],
             dataPayload[4],
             dataPayload[5]
         ],
-        "_id": id_generator()
+        "_id": id_generator(),
+        "Timestamp": getTime()
     }
 
     with open(jsonFileName, 'w') as jsonFile:

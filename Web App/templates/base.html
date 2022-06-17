@@ -11,16 +11,16 @@
 <h1 class="center-text"> Carbon Capture Project</h1>
 <p class="center-text">By: Rob-sensei</p>
 
-<a href="charts.html">
-    <img src="charts_button.png" alt="Charts Button" class="center">
+<a href="{{url_for('charts')}}">
+    <img src="{{url_for('static', filename='charts_button.png')}}" alt="Charts Button" class="center">
 </a>
 
-<a href="info.html">
-    <img src="info_button.png" alt="Info button" class="center">
+<a href="{{url_for('info')}}">
+    <img src="{{url_for('static', filename='info_button.png')}}" alt="Info button" class="center">
 </a>
 
 <a href="https://github.com/robcruz088">
-    <img src="github_button.png" alt="Github Button" class="center">
+    <img src="{{url_for('static', filename='github_button.png')}}" alt="Github Button" class="center">
 </a>
 
 </body>

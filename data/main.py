@@ -1,4 +1,4 @@
-from payloadData import payload, toJson, readFromJson
+from payloadData import payload, dataCollection
 from databaseAuth import connectDatabase
 
 
@@ -10,20 +10,16 @@ databaseName = input("Enter Database Name: ")
 client = connectDatabase(username,password,databaseName)
 
 try:
-    db = client['sensor_data'] # database in the mongoDB cluster
-    db_collection = db['sensor'] # collection in the data base
+    dataBase = client['sensor_data'] # database in the mongoDB cluster
+    databaseCollection = dataBase['sensor'] # collection in the data base
 
     while True:
         arduinoConnection = payload('COM3', 115200)
 
-        # the purpose of this is only to make the code look cleaner
-        # can be done without a JSON file for this specific case
-
-        toJson("payload_data.json",arduinoConnection) # send data to JSON
-        jsonPayload = readFromJson("payload_data.json") # read JSON file (dict object)
+        sensorData = dataCollection(arduinoConnection)
 
         # to database
-        db_collection.insert_one(jsonPayload)  # insert a new document each iteration
+        databaseCollection.insert_one(sensorData)  # insert a new document each iteration
 
 
 
